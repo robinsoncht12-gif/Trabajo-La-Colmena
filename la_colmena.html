@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>La Colmena - Gestión comercial</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+    <!-- LOGIN -->
+    <div class="contenedor" id="login">
+        <div class="izquierda">
+            <div class="logo"><div class="logo-icono">⬢</div><div><b>La Colmena</b><span>Gestión comercial</span></div></div>
+            <div class="centro"><div class="etiqueta">CONTROL · TRAZABILIDAD · CRECIMIENTO</div><h1>Tu operación, clara de principio a fin.</h1><p>Administra portafolio, inventario y ventas desde un mismo lugar, con información útil para cada decisión.</p></div>
+            <div class="stats"><div><b>54</b><span>Productos</span></div><div><b>3</b><span>Alertas activas</span></div><div><b>+ 18%</b><span>Ventas del mes</span></div></div>
+        </div>
+        <div class="derecha">
+            <div class="bienvenido">BIENVENIDO DE NUEVO</div><h2>Inicia sesión</h2><p class="sub">Ingresa tus datos para continuar.</p>
+            <form class="login-form" id="login-form" onsubmit="event.preventDefault(); entrar()">
+                <label for="correo">Correo electrónico</label><input id="correo" type="email" autocomplete="username" value="demo@lacolmena.co" required>
+                <label for="clave">Contraseña</label><input id="clave" type="password" autocomplete="current-password" value="demo123" required>
+                <a class="olvido" onclick="alert('Escribe a soporte@lacolmena.co para recuperar tu contraseña')">¿Olvidaste tu contraseña?</a>
+                <button class="btn" type="submit">Iniciar sesión ›</button>
+            </form>
+            <p class="form-message success" id="login-mensaje" role="status" aria-live="polite"></p>
+            <div class="registro-panel" id="registro-panel" hidden>
+                <h2>Crear cuenta</h2>
+                <p class="sub">Registra tus datos para acceder a La Colmena.</p>
+                <form id="registro-form" onsubmit="registrarUsuario(event)">
+                    <label for="registro-nombre">Nombre completo</label><input id="registro-nombre" type="text" autocomplete="name" maxlength="80" required>
+                    <label for="registro-correo">Correo electrónico</label><input id="registro-correo" type="email" autocomplete="email" maxlength="254" required>
+                    <label for="registro-clave">Contraseña</label><input id="registro-clave" type="password" autocomplete="new-password" minlength="8" required>
+                    <label for="registro-confirmar">Confirmar contraseña</label><input id="registro-confirmar" type="password" autocomplete="new-password" minlength="8" required>
+                    <button class="btn" type="submit">Registrar usuario</button>
+                </form>
+                <p class="form-message" id="registro-mensaje" role="status" aria-live="polite"></p>
+                <div class="crear">¿Ya tienes cuenta? <button class="link-button" type="button" onclick="mostrarLogin()">Iniciar sesión</button></div>
+            </div>
+            <div class="demo" id="demo-acceso"><b>Acceso de demostración</b><p>demo@lacolmena.co · demo123</p></div>
+            <div class="crear" id="crear-cuenta">¿Aún no tienes cuenta? <button class="link-button" type="button" onclick="mostrarRegistro()">Crear cuenta</button></div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+
+    <div id="dashboard">
+        <div class="app-shell">
+            <aside class="sidebar">
+                <div class="brand">
+                    <span class="brand-mark" aria-hidden="true">&#128029;</span>
+                    <div><span class="brand-name">La Colmena</span><span class="brand-subtitle">TechSolutions S.A.S</span></div>
+                </div>
+                <nav class="side-menu" aria-label="Men&uacute; principal">
+                    <button class="nav-item activo" id="b-resumen" onclick="mostrar('resumen')"><span class="nav-icon" aria-hidden="true">&#9638;</span>Resumen</button>
+                    <button class="nav-item" id="b-portafolio" onclick="mostrar('portafolio')"><span class="nav-icon" aria-hidden="true">&#9635;</span>Portafolio</button>
+                    <button class="nav-item" id="b-inventario" onclick="mostrar('inventario')"><span class="nav-icon" aria-hidden="true">&#9671;</span>Inventario</button>
+                    <button class="nav-item" id="b-ventas" onclick="mostrar('ventas')"><span class="nav-icon" aria-hidden="true">&#128722;</span>Ventas</button>
+                    <button class="nav-item" id="b-pedidos" onclick="mostrar('pedidos')"><span class="nav-icon" aria-hidden="true">&#9776;</span>Pedidos</button>
+                    <button class="nav-item" id="b-reportes" onclick="mostrar('reportes')"><span class="nav-icon" aria-hidden="true">&#9636;</span>Reportes</button>
+                    <button class="nav-item" id="b-clientes" onclick="mostrar('clientes')"><span class="nav-icon" aria-hidden="true">&#9822;</span>Clientes</button>
+                    <button class="nav-item" id="b-usuarios" onclick="mostrar('usuarios')"><span class="nav-icon" aria-hidden="true">&#9823;</span>Usuarios</button>
+                </nav>
+                <div class="sidebar-footer">
+                    <div class="user-profile"><div class="avatar" id="usuario-iniciales">AM</div><div><strong id="usuario-nombre">Ana Martínez</strong><small id="usuario-rol">Administradora</small></div></div>
+                    <button class="logout-button" onclick="salir()"><span aria-hidden="true">&#10162;</span>Cerrar sesi&oacute;n</button>
+                </div>
+            </aside>
+            <main class="main-panel">
+                <header class="topbar">
+                    <div><h1 id="titulo-seccion">Resumen</h1><p id="subtitulo-seccion">As&iacute; se mueve tu operaci&oacute;n hoy.</p></div>
+                    <div class="top-actions">
+                        <div class="company-mark">TECH<br>SOLUTIONS</div>
+                        <button class="notification-button" aria-label="Notificaciones">&#128276;</button>
+                        <span class="prototype-badge">Prototipo</span>
+                    </div>
+                </header>
+                <div class="dashboard-content">
+                    <section class="dashboard-view activa" id="sec-resumen">
+                        <div class="metrics">
+                            <article class="metric-card"><span class="metric-label">Ventas del mes</span><span class="metric-icon" aria-hidden="true">$</span><strong class="metric-value" id="resumen-ventas">$0</strong><span class="metric-change">Total registrado</span></article>
+                            <article class="metric-card"><span class="metric-label">Unidades disponibles</span><span class="metric-icon" aria-hidden="true">&#9671;</span><strong class="metric-value" id="resumen-unidades">0</strong><span class="metric-change">En inventario</span></article>
+                            <article class="metric-card"><span class="metric-label">Pedidos abiertos</span><span class="metric-icon" aria-hidden="true">&#128666;</span><strong class="metric-value" id="resumen-pedidos">0</strong><span class="metric-change">Por gestionar</span></article>
+                        </div>
+                        <div class="overview-grid">
+                            <div class="overview-main">
+                                <section>
+                                    <div class="section-heading"><h2>Accesos r&aacute;pidos</h2></div>
+                                    <div class="quick-cards">
+                                        <button class="quick-card" onclick="mostrar('portafolio')"><span class="quick-icon" aria-hidden="true">&#9635;</span><span class="quick-arrow" aria-hidden="true">&rsaquo;</span><strong>Explorar portafolio</strong><small>Consulta categor&iacute;as y productos</small></button>
+                                        <button class="quick-card" onclick="mostrar('inventario')"><span class="quick-icon" aria-hidden="true">&#9671;</span><span class="quick-arrow" aria-hidden="true">&rsaquo;</span><strong>Revisar inventario</strong><small>Busca y ajusta existencias</small></button>
+                                        <button class="quick-card" onclick="mostrar('ventas')"><span class="quick-icon" aria-hidden="true">&#128722;</span><span class="quick-arrow" aria-hidden="true">&rsaquo;</span><strong>Registrar venta</strong><small>Selecciona productos y confirma</small></button>
+                                    </div>
+                                </section>
+                                <section>
+                                    <div class="section-heading"><h2>Ventas recientes</h2><p>&Uacute;ltimos movimientos</p></div>
+                                    <div class="data-card">
+                                        <table>
+                                            <thead><tr><th>Venta</th><th>Cliente</th><th>Estado</th><th>Total</th></tr></thead>
+                                            <tbody id="ventas-recientes"><tr><td colspan="4" class="empty-row">Cargando ventas...</td></tr></tbody>
+                                        </table>
+                                    </div>
+                                </section>
+                            </div>
+                            <section>
+                                <div class="section-heading"><h2>Atenci&oacute;n requerida</h2><p id="alerta-conteo">Productos con stock bajo</p></div>
+                                <div class="attention-list" id="lista-alertas"><div class="attention-item">Cargando alertas...</div></div>
+                            </section>
+                        </div>
+                    </section>
+                    <section class="dashboard-view" id="sec-portafolio">
+                        <div class="workspace-card">
+                            <h2>Portafolio de productos</h2>
+                            <p>Consulta y agrega productos al cat&aacute;logo.</p>
+                            <form class="workspace-form" id="producto-form">
+                                <div class="form-field"><label for="producto-nombre">Nombre</label><input id="producto-nombre" maxlength="100" required></div>
+                                <div class="form-field"><label for="producto-categoria">Categor&iacute;a</label><input id="producto-categoria" maxlength="80"></div>
+                                <div class="form-field"><label for="producto-precio">Precio</label><input id="producto-precio" type="number" min="1" step="1" required></div>
+                                <div class="form-field"><label for="producto-stock">Stock inicial</label><input id="producto-stock" type="number" min="0" step="1" value="0" required></div>
+                                <p class="form-message" id="producto-mensaje" role="status" aria-live="polite"></p>
+                                <button class="btn2 form-submit" type="submit">Guardar producto</button>
+                            </form>
+                            <div class="data-card">
+                                <table><thead><tr><th>C&oacute;digo</th><th>Producto</th><th>Categor&iacute;a</th><th>Precio</th><th>Stock</th></tr></thead><tbody id="lista"><tr><td colspan="5" class="empty-row">Cargando productos...</td></tr></tbody></table>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="dashboard-view" id="sec-inventario">
+                        <div class="workspace-card"><h2>Inventario</h2><p>Unidades disponibles: 1.248</p><p>Hay 2 productos que requieren reposici&oacute;n.</p><button class="btn2" onclick="alert('Inventario actualizado')">Actualizar inventario</button></div>
+                    </section>
+                    <section class="dashboard-view" id="sec-ventas">
+                        <div class="workspace-card">
+                            <h2>Registrar venta</h2>
+                            <form class="workspace-form" id="venta-form">
+                                <div class="form-field"><label for="venta-cliente">Cliente</label><select id="venta-cliente" required><option value="">Selecciona un cliente</option></select></div>
+                                <div class="form-field"><label for="venta-producto">Producto</label><select id="venta-producto" required><option value="">Selecciona un producto</option></select></div>
+                                <div class="form-field"><label for="venta-cantidad">Cantidad</label><input id="venta-cantidad" type="number" min="1" step="1" value="1" required></div>
+                                <p class="form-message" id="venta-mensaje" role="status" aria-live="polite"></p>
+                                <button class="btn2 form-submit" type="submit">Confirmar venta</button>
+                            </form>
+                            <div class="section-heading"><h2>Ventas registradas</h2></div>
+                            <div class="data-card"><table><thead><tr><th>Venta</th><th>Cliente</th><th>Estado</th><th>Total</th></tr></thead><tbody id="lista-ventas"><tr><td colspan="4" class="empty-row">Cargando ventas...</td></tr></tbody></table></div>
+                        </div>
+                    </section>
+                    <section class="dashboard-view" id="sec-pedidos">
+                        <div class="workspace-card"><h2>Pedidos</h2><p>Tienes 7 pedidos abiertos; 2 est&aacute;n por recibir.</p><button class="btn2" onclick="alert('Pedido creado')">Nuevo pedido</button></div>
+                    </section>
+                    <section class="dashboard-view" id="sec-reportes">
+                        <div class="workspace-card"><h2>Reportes</h2><p>Resumen del periodo actual: ventas por $28,4 M y crecimiento del 18%.</p></div>
+                    </section>
+                    <section class="dashboard-view" id="sec-usuarios">
+                        <div class="workspace-card"><h2>Usuarios registrados</h2><p>Listado disponible para la cuenta administradora.</p><div class="data-card"><table><thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Estado</th></tr></thead><tbody id="lista-usuarios"><tr><td colspan="4" class="empty-row">Cargando usuarios...</td></tr></tbody></table></div></div>
+                    </section>
+                    <section class="dashboard-view" id="sec-clientes">
+                        <div class="workspace-card">
+                            <h2>Clientes</h2>
+                            <p>Registra clientes y consulta sus datos.</p>
+                            <form class="workspace-form" id="cliente-form">
+                                <div class="form-field"><label for="cliente-nombre">Nombre completo</label><input id="cliente-nombre" maxlength="100" required></div>
+                                <div class="form-field"><label for="cliente-correo">Correo electr&oacute;nico</label><input id="cliente-correo" type="email" maxlength="254" required></div>
+                                <div class="form-field"><label for="cliente-telefono">Tel&eacute;fono</label><input id="cliente-telefono" maxlength="30"></div>
+                                <div class="form-field"><label for="cliente-direccion">Direcci&oacute;n</label><input id="cliente-direccion" maxlength="200"></div>
+                                <p class="form-message" id="cliente-mensaje" role="status" aria-live="polite"></p>
+                                <button class="btn2 form-submit" type="submit">Guardar cliente</button>
+                            </form>
+                            <div class="data-card"><table><thead><tr><th>Nombre</th><th>Correo</th><th>Tel&eacute;fono</th><th>Direcci&oacute;n</th></tr></thead><tbody id="lista-clientes"><tr><td colspan="4" class="empty-row">Cargando clientes...</td></tr></tbody></table></div>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="/static/app.js" defer></script>
+</body>
+</html>
